@@ -5,7 +5,10 @@ public class Process implements Runnable {
     private int burstTime;
     private int timeQuantum;
     private int remainingTime;
-    private int priority;          // Feature 1: Priority field
+    private int priority;  
+// Feature 1: Priority field
+    private long creationTime;
+private long totalWaitingTime;
     
     // Constructor
     public Process(String name, int burstTime, int timeQuantum, int priority) {
@@ -14,6 +17,8 @@ public class Process implements Runnable {
         this.timeQuantum = timeQuantum;
         this.remainingTime = burstTime;
         this.priority = priority;
+         this.creationTime = System.currentTimeMillis(); 
+    this.totalWaitingTime = 0; 
     }
     
     public void run() {
@@ -67,4 +72,15 @@ public class Process implements Runnable {
     public boolean isFinished() {
         return remainingTime <= 0;
     }
+    public long getCreationTime() {
+    return creationTime;
+}
+
+public void addWaitingTime(long time) {
+    this.totalWaitingTime += time;
+}
+
+public long getTotalWaitingTime() {
+    return totalWaitingTime;
+}
 }
