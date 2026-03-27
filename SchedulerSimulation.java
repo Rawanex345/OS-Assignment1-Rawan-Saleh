@@ -1,4 +1,4 @@
-// (نفس الاستيراد والكود حقك بدون تغيير)
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Map;
@@ -31,10 +31,10 @@ class Process implements Runnable {
     private int timeQuantum;
     private int remainingTime;
 
-    // ✅ Feature 1: Priority
+    // Priority
     private int priority;
 
-    // ✅ Feature 3: Waiting Time
+    //  Waiting Time
     private long waitingTime = 0;
     private long lastExecutionTime;
 
@@ -51,7 +51,6 @@ class Process implements Runnable {
     @Override
     public void run() {
 
-        // ✅ حساب وقت الانتظار
         long now = System.currentTimeMillis();
         waitingTime += (now - lastExecutionTime);
 
@@ -101,7 +100,6 @@ class Process implements Runnable {
 
         System.out.println();
 
-        // تحديث آخر وقت تنفيذ
         lastExecutionTime = System.currentTimeMillis();
     }
 
@@ -110,9 +108,9 @@ class Process implements Runnable {
         StringBuilder bar = new StringBuilder("[");
         for (int i = 0; i < width; i++) {
             if (i < filled) {
-                bar.append(Colors.GREEN + "█" + Colors.RESET);
+                bar.append(Colors.GREEN + " " + Colors.RESET);
             } else {
-                bar.append(Colors.WHITE + "░" + Colors.RESET);
+                bar.append(Colors.WHITE + " " + Colors.RESET);
             }
         }
         bar.append("] ").append(progress).append("%");
@@ -145,12 +143,12 @@ class Process implements Runnable {
 
 public class SchedulerSimulation {
 
-    // ✅ Feature 2
+    //  Feature 2
     static int contextSwitches = 0;
 
     public static void main(String[] args) {
 
-        int studentID = 123456789; // ✏️ غيريه
+        int studentID = 444052889; 
 
         Random random = new Random(studentID);
 
