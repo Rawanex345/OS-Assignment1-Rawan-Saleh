@@ -6,6 +6,7 @@ public class Process implements Runnable {
     private int timeQuantum;
     private int remainingTime;
     private int priority;  
+    private long lastExecutionTime;
 // Feature 1: Priority field
     private long creationTime;
 private long totalWaitingTime;
@@ -19,11 +20,13 @@ private long totalWaitingTime;
         this.priority = priority;
          this.creationTime = System.currentTimeMillis(); 
     this.totalWaitingTime = 0; 
+        this.lastExecutionTime = creationTime;
     }
     
     public void run() {
         int executionTime = Math.min(timeQuantum, remainingTime);
-        
+        long now = System.currentTimeMillis();
+totalWaitingTime += (now - lastExecutionTime);
         try {
             // Simulate execution
             Thread.sleep(executionTime);
@@ -39,9 +42,9 @@ private long totalWaitingTime;
         } else {
             // Process finished
             System.out.println(name + " completed execution!");
-        }
+        } lastExecutionTime = System.currentTimeMillis();
     }
-    
+   
     public void runToCompletion() {
         try {
             Thread.sleep(remainingTime);
