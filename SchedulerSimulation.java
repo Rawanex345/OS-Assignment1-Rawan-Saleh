@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
 
-// ANSI Color Codes for enhanced terminal output
+
 class Colors {
     public static final String RESET = "\u001B[0m";
     public static final String BOLD = "\u001B[1m";
@@ -24,7 +24,7 @@ class Colors {
     public static final String BRIGHT_GREEN = "\u001B[92m";
 }
 
-// Class representing a process that implements Runnable to be run by a thread
+
 class Process implements Runnable {
     private String name;
     private int burstTime;
@@ -34,9 +34,9 @@ class Process implements Runnable {
     // Priority
     private int priority;
 
-    //  Waiting Time
+    // Waiting Time
     private long waitingTime = 0;
-    private long lastExecutionTime;
+    private long lastQueueEnterTime;
 
     public Process(String name, int burstTime, int timeQuantum, int priority) {
         this.name = name;
@@ -45,14 +45,14 @@ class Process implements Runnable {
         this.remainingTime = burstTime;
         this.priority = priority;
 
-        this.lastExecutionTime = System.currentTimeMillis();
+        this.lastQueueEnterTime = System.currentTimeMillis();
     }
 
     @Override
     public void run() {
 
         long now = System.currentTimeMillis();
-        waitingTime += (now - lastExecutionTime);
+        waitingTime += (now - lastQueueEnterTime);
 
         int runTime = Math.min(timeQuantum, remainingTime);
 
@@ -99,8 +99,6 @@ class Process implements Runnable {
         }
 
         System.out.println();
-
-        lastExecutionTime = System.currentTimeMillis();
     }
 
     private String createProgressBar(int progress, int width) {
@@ -119,6 +117,9 @@ class Process implements Runnable {
 
     public void runToCompletion() {
         try {
+            long now = System.currentTimeMillis();
+            waitingTime += (now - lastQueueEnterTime);
+
             System.out.println(Colors.BRIGHT_CYAN + "  ⚡ " + Colors.BOLD + Colors.CYAN + name + 
                               Colors.RESET + Colors.BRIGHT_CYAN + " is the last process, running to completion" + 
                               Colors.RESET + " [" + remainingTime + "ms]");
@@ -132,6 +133,11 @@ class Process implements Runnable {
         }
     }
 
+    
+    public void enterQueue() {
+        lastQueueEnterTime = System.currentTimeMillis();
+    }
+
     public String getName() { return name; }
     public int getBurstTime() { return burstTime; }
     public int getRemainingTime() { return remainingTime; }
@@ -143,7 +149,6 @@ class Process implements Runnable {
 
 public class SchedulerSimulation {
 
-    //  Feature 2
     static int contextSwitches = 0;
 
     public static void main(String[] args) {
@@ -158,14 +163,12 @@ public class SchedulerSimulation {
         Queue<Thread> processQueue = new LinkedList<>();
         Map<Thread, Process> processMap = new HashMap<>();
 
-        // لتجميع العمليات
         LinkedList<Process> allProcesses = new LinkedList<>();
 
         System.out.println("\nSTART\n");
 
         for (int i = 1; i <= numProcesses; i++) {
             int burstTime = timeQuantum/2 + random.nextInt(2 * timeQuantum + 1);
-
             int priority = random.nextInt(5) + 1;
 
             Process process = new Process("P" + i, burstTime, timeQuantum, priority);
@@ -179,7 +182,7 @@ public class SchedulerSimulation {
 
             Thread currentThread = processQueue.poll();
 
-            contextSwitches++; // ✅
+            contextSwitches++;
 
             currentThread.start();
 
@@ -210,6 +213,8 @@ public class SchedulerSimulation {
 
     public static void addProcessToQueue(Process process, Queue<Thread> processQueue,
                                         Map<Thread, Process> processMap) {
+
+        process.enterQueue(); 
 
         Thread thread = new Thread(process);
         processQueue.add(thread);
