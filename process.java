@@ -5,7 +5,7 @@ public class Process implements Runnable {
     private int burstTime;
     private int timeQuantum;
     private int remainingTime;
-    private int priority;
+    private int priority ;
 
     // Waiting Time
     private long creationTime;
