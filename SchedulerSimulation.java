@@ -29,7 +29,7 @@ public class SchedulerSimulation {
 
     public static void main(String[] args) {
 
-        int studentID = 444052889; 
+        int studentID = 444052889; //تغيير الرقم الجامعي
 
         Random random = new Random(studentID);
 
@@ -58,7 +58,7 @@ public class SchedulerSimulation {
 
             Thread currentThread = processQueue.poll();
 
-            contextSwitches++;
+            contextSwitches++;  //العداد
 
             currentThread.start();
 
