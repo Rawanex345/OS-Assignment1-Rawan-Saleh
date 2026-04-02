@@ -83,7 +83,7 @@ public class SchedulerSimulation {
 
         System.out.println("\nProcess\tBurst Time\tWaiting Time");
         for (Process p : allProcesses) {
-            System.out.println(p.getName() + "\t" + p.getBurstTime() + "\t" + p.getWaitingTime());
+            System.out.println(p.getName() + "\t" + p.getBurstTime() + "\t" + p.getWaitingTime()); //طباعه الجدول
         }
     }
 
